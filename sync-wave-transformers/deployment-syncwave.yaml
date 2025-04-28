@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: deployment-syncwave
+patch: |-
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: "*"
+    annotations:
+      argocd.argoproj.io/sync-wave: "9"
+target:
+  kind: Deployment

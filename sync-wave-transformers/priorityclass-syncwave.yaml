@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: priorityclass-syncwave
+patch: |-
+  apiVersion: scheduling.k8s.io/v1
+  kind: PriorityClass
+  metadata:
+    name: "*"
+    annotations:
+      argocd.argoproj.io/sync-wave: "8"
+target:
+  kind: PriorityClass

@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: rolebinding-syncwave
+patch: |-
+  apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: "*"
+    annotations:
+      argocd.argoproj.io/sync-wave: "6"
+target:
+  kind: RoleBinding

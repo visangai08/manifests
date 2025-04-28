@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: podsecuritypolicy-syncwave
+patch: |-
+  apiVersion: policy/v1beta1
+  kind: PodSecurityPolicy
+  metadata:
+    name: "*"
+    annotations:
+      argocd.argoproj.io/sync-wave: "4"
+target:
+  kind: PodSecurityPolicy

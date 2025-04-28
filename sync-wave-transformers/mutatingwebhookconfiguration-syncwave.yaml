@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: mutatingwebhookconfiguration-syncwave
+patch: |-
+  apiVersion: admissionregistration.k8s.io/v1
+  kind: MutatingWebhookConfiguration
+  metadata:
+    name: "*"
+    annotations:
+      argocd.argoproj.io/sync-wave: "3"
+target:
+  kind: MutatingWebhookConfiguration

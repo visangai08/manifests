@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: service-syncwave
+patch: |-
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: "*"
+    annotations:
+      argocd.argoproj.io/sync-wave: "8"
+target:
+  kind: Service

@@ -1,0 +1,13 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: persistentvolume-syncwave
+patch: |-
+  apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: "*"
+    annotations:
+      argocd.argoproj.io/sync-wave: "8"
+target:
+  kind: PersistentVolume
