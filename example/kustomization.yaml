@@ -99,6 +99,9 @@ resources:
 # Here is the internal documentation for Ray: - ../experimental/ray/README.md
 # - ../experimental/ray/kuberay-operator/overlays/kubeflow
 
+# transformers:
+- ../sync-wave-transformers
+
 components:
 # Pod Security Standards
 # https://kubernetes.io/docs/concepts/security/pod-security-standards/
