@@ -35,4 +35,5 @@ patches:
       value: "false"
   target:
     kind: Deployment
-    name: mysql
+    labels:
+        app: mysql
