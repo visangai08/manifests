@@ -36,4 +36,4 @@ patches:
   target:
     kind: Deployment
     labels:
-        app: mysql
+      app: mysql
