@@ -2,14 +2,14 @@
 # This script helps to create a PR to update the Training Operator manifests
 
 SCRIPT_DIRECTORY=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-source "${SCRIPT_DIRECTORY}/lib.sh"
+source "${SCRIPT_DIRECTORY}/library.sh"
 
 setup_error_handling
 
 COMPONENT_NAME="training-operator"
 REPOSITORY_NAME="kubeflow/training-operator"
 REPOSITORY_URL="https://github.com/kubeflow/training-operator.git"
-COMMIT="v1.9.1"
+COMMIT="v1.9.2"
 REPOSITORY_DIRECTORY="training-operator"
 SOURCE_DIRECTORY=${SOURCE_DIRECTORY:=/tmp/kubeflow-${COMPONENT_NAME}}
 BRANCH_NAME=${BRANCH_NAME:=synchronize-${COMPONENT_NAME}-manifests-${COMMIT?}}
