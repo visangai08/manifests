@@ -1,5 +1,8 @@
 # Kubeflow Manifests
 
+![build checks status](https://github.com/kubeflow/manifests/actions/workflows/full_kubeflow_integration_test.yaml/badge.svg?branch=master)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/9940/badge)](https://www.bestpractices.dev/projects/9940)
+
 The **Kubeflow Manifests** are a collection of community-maintained manifests for installing Kubeflow in popular Kubernetes clusters such as Kind, Minikube, Rancher, EKS, AKS, and GKE. The manifests include all Kubeflow components (Pipelines, Kserve, etc.), the **Kubeflow Central Dashboard**, and other applications that comprise the **Kubeflow Platform**. This installation is beneficial for users wanting to explore the end-to-end capabilities of the Kubeflow Platform.
 
 For a stable and conservative experience, we recommend using the [latest stable release](https://github.com/kubeflow/manifests/releases). However, please consult the more up-to-date documentation in the master branch.
@@ -66,7 +69,7 @@ This repository periodically synchronizes all official Kubeflow components from 
 | KServe | apps/kserve/kserve | [v0.15.0](https://github.com/kserve/kserve/releases/tag/v0.15.0/install/v0.15.0) |
 | KServe Models Web Application | apps/kserve/models-web-app | [v0.14.0](https://github.com/kserve/models-web-app/tree/v0.14.0/config) |
 | Kubeflow Pipelines | apps/pipeline/upstream | [2.5.0](https://github.com/kubeflow/pipelines/tree/2.5.0/manifests/kustomize) |
-| Kubeflow Model Registry | apps/model-registry/upstream | [v0.2.17](https://github.com/kubeflow/model-registry/tree/v0.2.17/manifests/kustomize) |
+| Kubeflow Model Registry | apps/model-registry/upstream | [v0.2.18](https://github.com/kubeflow/model-registry/tree/v0.2.18/manifests/kustomize) |
 | Spark Operator | apps/spark/spark-operator | [2.1.1](https://github.com/kubeflow/spark-operator/tree/v2.1.1) |
 
 The following matrix shows the versions of common components used across different Kubeflow projects:
