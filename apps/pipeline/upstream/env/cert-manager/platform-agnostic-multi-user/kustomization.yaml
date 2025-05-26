@@ -31,7 +31,7 @@ patches:
     name: cache-server
 # - patch: |-
 #     - op: add
-#       path: /spec/template/metadata/annotations/sidecar.istio.io~1inject
+#       path: /spec/template/spec/metadata/labels/sidecar.istio.io~1inject
 #       value: "false"
 #   target:
 #     kind: Deployment
