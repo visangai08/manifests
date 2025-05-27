@@ -18,7 +18,7 @@ data:
       skipApprovalScreen: true
     enablePasswordDB: true
     staticPasswords:
-    - email: ai_cell@visangai
+    - email: ai_cell@visang.com
       hashFromEnv: DEX_USER_PASSWORD
       username: ai_cell
       userID: "15841185641784"
