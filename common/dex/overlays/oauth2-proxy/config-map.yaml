@@ -18,9 +18,9 @@ data:
       skipApprovalScreen: true
     enablePasswordDB: true
     staticPasswords:
-    - email: user@example.com
+    - email: ai_cell@visangai
       hashFromEnv: DEX_USER_PASSWORD
-      username: user
+      username: ai_cell
       userID: "15841185641784"
     staticClients:
     # https://github.com/dexidp/dex/pull/1664
