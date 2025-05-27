@@ -243,7 +243,55 @@ spawnerFormDefaults:
     value: ""
 
     # the list of available toleration groups in the dropdown
-    options: []
+    options:
+      - configKey: "gpucom1-"
+        displayName: "gpucom1-NVIDIA-GeForce-RTX-3090-Ti"
+        affinity:
+          # Require a Node with label `lifecycle=kubeflow-notebook`
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: "nvidia.com/gpu.product"
+                      operator: "In"
+                      values:
+                        - "NVIDIA-GeForce-RTX-3090-Ti"
+      - configKey: "gpucom2-"
+        displayName: "gpucom2-NVIDIA-GeForce-RTX-3090"
+        affinity:
+          # Require a Node with label `lifecycle=kubeflow-notebook`
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: "nvidia.com/gpu.product"
+                      operator: "In"
+                      values:
+                        - "NVIDIA-GeForce-RTX-3090"
+      - configKey: "gpucom3-"
+        displayName: "gpucom3-NVIDIA-GeForce-RTX-4090"
+        affinity:
+          # Require a Node with label `lifecycle=kubeflow-notebook`
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: "nvidia.com/gpu.product"
+                      operator: "In"
+                      values:
+                        - "NVIDIA-GeForce-RTX-4090"
+      - configKey: "gpucom4-"
+        displayName: "gpucom4-NVIDIA-A100-80GB-PCIe"
+        affinity:
+          # Require a Node with label `lifecycle=kubeflow-notebook`
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: "nvidia.com/gpu.product"
+                      operator: "In"
+                      values:
+                        - "NVIDIA-A100-80GB-PCIe"
     #options:
     #  - groupKey: "group_1"
     #    displayName: "4 CPU 8Gb Mem at ~$X.XXX USD per day"
