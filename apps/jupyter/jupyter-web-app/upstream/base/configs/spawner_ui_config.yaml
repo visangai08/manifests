@@ -204,45 +204,6 @@ spawnerFormDefaults:
     value: ""
 
     # the list of available affinity configs in the dropdown
-    options: []
-    #options:
-    #  - configKey: "dedicated_node_per_notebook"
-    #    displayName: "Dedicated Node Per Notebook"
-    #    affinity:
-    #      # Require a Node with label `lifecycle=kubeflow-notebook`
-    #      nodeAffinity:
-    #        requiredDuringSchedulingIgnoredDuringExecution:
-    #          nodeSelectorTerms:
-    #            - matchExpressions:
-    #                - key: "lifecycle"
-    #                  operator: "In"
-    #                  values:
-    #                    - "kubeflow-notebook"
-    #
-    #      # Require a Node WITHOUT an existing Pod having `notebook-name` label
-    #      podAntiAffinity:
-    #        requiredDuringSchedulingIgnoredDuringExecution:
-    #          - labelSelector:
-    #              matchExpressions:
-    #                - key: "notebook-name"
-    #                  operator: "Exists"
-    #            topologyKey: "kubernetes.io/hostname"
-    #            # WARNING: `namespaceSelector` is Beta in 1.22 and Stable in 1.24,
-    #            #          setting to {} is required for affinity to work across Namespaces
-    #            namespaceSelector: {}
-
-  ################################################################
-  # Tolerations
-  ################################################################
-  tolerationGroup:
-    readOnly: false
-
-    # the `groupKey` of the default toleration group
-    # (to have no default, set as "")
-    # (if `readOnly`, the default `value` will be the only accessible option)
-    value: ""
-
-    # the list of available toleration groups in the dropdown
     options:
       - configKey: "gpucom1-"
         displayName: "gpucom1-NVIDIA-GeForce-RTX-3090-Ti"
@@ -292,6 +253,45 @@ spawnerFormDefaults:
                       operator: "In"
                       values:
                         - "NVIDIA-A100-80GB-PCIe"
+    #options:
+    #  - configKey: "dedicated_node_per_notebook"
+    #    displayName: "Dedicated Node Per Notebook"
+    #    affinity:
+    #      # Require a Node with label `lifecycle=kubeflow-notebook`
+    #      nodeAffinity:
+    #        requiredDuringSchedulingIgnoredDuringExecution:
+    #          nodeSelectorTerms:
+    #            - matchExpressions:
+    #                - key: "lifecycle"
+    #                  operator: "In"
+    #                  values:
+    #                    - "kubeflow-notebook"
+    #
+    #      # Require a Node WITHOUT an existing Pod having `notebook-name` label
+    #      podAntiAffinity:
+    #        requiredDuringSchedulingIgnoredDuringExecution:
+    #          - labelSelector:
+    #              matchExpressions:
+    #                - key: "notebook-name"
+    #                  operator: "Exists"
+    #            topologyKey: "kubernetes.io/hostname"
+    #            # WARNING: `namespaceSelector` is Beta in 1.22 and Stable in 1.24,
+    #            #          setting to {} is required for affinity to work across Namespaces
+    #            namespaceSelector: {}
+
+  ################################################################
+  # Tolerations
+  ################################################################
+  tolerationGroup:
+    readOnly: false
+
+    # the `groupKey` of the default toleration group
+    # (to have no default, set as "")
+    # (if `readOnly`, the default `value` will be the only accessible option)
+    value: ""
+
+    # the list of available toleration groups in the dropdown
+    options: []
     #options:
     #  - groupKey: "group_1"
     #    displayName: "4 CPU 8Gb Mem at ~$X.XXX USD per day"
