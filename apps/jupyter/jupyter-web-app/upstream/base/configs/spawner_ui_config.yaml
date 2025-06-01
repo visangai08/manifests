@@ -242,7 +242,7 @@ spawnerFormDefaults:
                       values:
                         - "NVIDIA-GeForce-RTX-4090"
       - configKey: "gpucom4-"
-        displayName: "gpucom4-NVIDIA-A100-80GB-PCIe"
+        displayName: "gpucom4-NVIDIA-A100-80GB"
         affinity:
           # Require a Node with label `lifecycle=kubeflow-notebook`
           nodeAffinity:
@@ -253,6 +253,7 @@ spawnerFormDefaults:
                       operator: "In"
                       values:
                         - "NVIDIA-A100-80GB-PCIe"
+                        - "NVIDIA-A100-SXM4-80GB"
     #options:
     #  - configKey: "dedicated_node_per_notebook"
     #    displayName: "Dedicated Node Per Notebook"
