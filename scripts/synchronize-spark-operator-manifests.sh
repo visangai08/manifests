@@ -7,7 +7,7 @@ source "${SCRIPT_DIRECTORY}/library.sh"
 setup_error_handling
 
 COMPONENT_NAME="spark-operator"
-SPARK_OPERATOR_VERSION=${SPARK_OPERATOR_VERSION:="2.1.1"}
+SPARK_OPERATOR_VERSION=${SPARK_OPERATOR_VERSION:="2.2.0"}
 SPARK_OPERATOR_HELM_CHART_REPO=${SPARK_OPERATOR_HELM_CHART_REPO:="https://kubeflow.github.io/spark-operator"}
 DEV_MODE=${DEV_MODE:=false}
 BRANCH_NAME=${BRANCH_NAME:=synchronize-${COMPONENT_NAME}-manifests-${SPARK_OPERATOR_VERSION?}}
@@ -45,9 +45,9 @@ echo "Successfully generated manifests."
 
 # Use OS-compatible sed command
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    sed -i '' 's/Spark Operator[^|]*|[^|]*apps\/spark\/spark-operator[^|]*|[^|]*[0-9]\.[0-9]\.[0-9]/Spark Operator	|	apps\/spark\/spark-operator	|	'"${SPARK_OPERATOR_VERSION}"'/g' "${MANIFESTS_DIRECTORY}/README.md"
+    sed -i '' 's/Spark Operator[^|]*|[^|]*apps\/spark\/spark-operator[^|]*|[^|]*\[[0-9]\.[0-9]\.[0-9]\]([^)]*)/Spark Operator	|	apps\/spark\/spark-operator	|	['"${SPARK_OPERATOR_VERSION}"'](https:\/\/github.com\/kubeflow\/spark-operator\/tree\/v'"${SPARK_OPERATOR_VERSION}"')/g' "${MANIFESTS_DIRECTORY}/README.md"
 else
-    sed -i 's/Spark Operator.*|.*apps\/spark\/spark-operator[^|]*|.*[0-9]\.[0-9]\.[0-9]/Spark Operator	|	apps\/spark\/spark-operator	|	'"${SPARK_OPERATOR_VERSION}"'/g' "${MANIFESTS_DIRECTORY}/README.md"
+    sed -i 's/Spark Operator.*|.*apps\/spark\/spark-operator[^|]*|.*\[[0-9]\.[0-9]\.[0-9]\]([^)]*)/Spark Operator	|	apps\/spark\/spark-operator	|	['"${SPARK_OPERATOR_VERSION}"'](https:\/\/github.com\/kubeflow\/spark-operator\/tree\/v'"${SPARK_OPERATOR_VERSION}"')/g' "${MANIFESTS_DIRECTORY}/README.md"
 fi
 
 commit_changes "$MANIFESTS_DIRECTORY" "Update kubeflow/${COMPONENT_NAME} manifests to ${SPARK_OPERATOR_VERSION}" \

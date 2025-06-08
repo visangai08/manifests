@@ -6,10 +6,6 @@
 The **Kubeflow Manifests** are a collection of community-maintained manifests for installing Kubeflow in popular Kubernetes clusters such as Kind, Minikube, Rancher, EKS, AKS, and GKE. The manifests include all Kubeflow components (Pipelines, Kserve, etc.), the **Kubeflow Central Dashboard**, and other applications that comprise the **Kubeflow Platform**. This installation is beneficial for users wanting to explore the end-to-end capabilities of the Kubeflow Platform.
 
 For a stable and conservative experience, we recommend using the [latest stable release](https://github.com/kubeflow/manifests/releases). However, please consult the more up-to-date documentation in the master branch.
-
-- **Kubeflow 1.10:**
-  - [`v1.10.0`](https://github.com/kubeflow/manifests/tree/v1.10-branch)
-
 You can also install the master branch of [`kubeflow/manifests`](https://github.com/kubeflow/manifests) by following the instructions [here](https://github.com/kubeflow/manifests?tab=readme-ov-file#installation) and providing us with feedback.
 
 ## Table of Contents
@@ -70,13 +66,13 @@ This repository periodically synchronizes all official Kubeflow components from 
 | KServe Models Web Application | apps/kserve/models-web-app | [v0.14.0](https://github.com/kserve/models-web-app/tree/v0.14.0/config) |
 | Kubeflow Pipelines | apps/pipeline/upstream | [2.5.0](https://github.com/kubeflow/pipelines/tree/2.5.0/manifests/kustomize) |
 | Kubeflow Model Registry | apps/model-registry/upstream | [v0.2.18](https://github.com/kubeflow/model-registry/tree/v0.2.18/manifests/kustomize) |
-| Spark Operator | apps/spark/spark-operator | [2.1.1](https://github.com/kubeflow/spark-operator/tree/v2.1.1) |
+| Spark Operator | apps/spark/spark-operator | [2.2.0](https://github.com/kubeflow/spark-operator/tree/v2.2.0) |
 
 The following matrix shows the versions of common components used across different Kubeflow projects:
 
 | Component | Local Manifests Path | Upstream Revision |
 | - | - | - |
-| Istio | common/istio-1-24 | [1.24.3](https://github.com/istio/istio/releases/tag/1.24.3) |
+| Istio | common/istio-cni-1-24 | [1.24.3](https://github.com/istio/istio/releases/tag/1.24.3) |
 | Knative | common/knative/knative-serving <br /> common/knative/knative-eventing | [v1.16.2](https://github.com/knative/serving/releases/tag/knative-v1.16.2) <br /> [v1.16.4](https://github.com/knative/eventing/releases/tag/knative-v1.16.4) |
 | Cert Manager | common/cert-manager | [1.16.1](https://github.com/cert-manager/cert-manager/releases/tag/v1.16.1) |
 
@@ -215,15 +211,20 @@ For more troubleshooting info, also check out <https://cert-manager.io/docs/trou
 
 #### Istio
 
-Istio is used by most Kubeflow components to secure their traffic, enforce network authorization, and implement routing policies. If you use Cilium CNI on your cluster, you must configure it properly for Istio as shown [here](https://docs.cilium.io/en/latest/network/servicemesh/istio/); otherwise, you will encounter RBAC access denied on the central dashboard.
+Istio is used by most Kubeflow components to secure their traffic, enforce network authorization, and implement routing policies. This installation uses Istio CNI, which eliminates the need for privileged init containers and improves compatibility with Pod Security Standards. If you use Cilium CNI on your cluster, you must configure it properly for Istio as shown [here](https://docs.cilium.io/en/latest/network/servicemesh/istio/); otherwise, you will encounter RBAC access denied on the central dashboard.
 
 Install Istio:
 
 ```sh
-echo "Installing Istio configured with external authorization..."
-kustomize build common/istio-1-24/istio-crds/base | kubectl apply -f -
-kustomize build common/istio-1-24/istio-namespace/base | kubectl apply -f -
-kustomize build common/istio-1-24/istio-install/overlays/oauth2-proxy | kubectl apply -f -
+echo "Installing Istio CNI configured with external authorization..."
+kustomize build common/istio-cni-1-24/istio-crds/base | kubectl apply -f -
+kustomize build common/istio-cni-1-24/istio-namespace/base | kubectl apply -f -
+
+# For most platforms (Kind, Minikube, AKS, EKS, etc.)
+kustomize build common/istio-cni-1-24/istio-install/overlays/oauth2-proxy | kubectl apply -f -
+
+# For Google Kubernetes Engine (GKE), use:
+# kustomize build common/istio-cni-1-24/istio-install/overlays/gke | kubectl apply -f -
 
 echo "Waiting for all Istio Pods to become ready..."
 kubectl wait --for=condition=Ready pods --all -n istio-system --timeout 300s
@@ -296,7 +297,7 @@ metadata:
   name: dex
 data:
   config.yaml: |
-    issuer: http://dex.auth.svc.cluster.local:5556/dex
+    issuer: https://$KUBEFLOW_INGRESS_URL/dex
     storage:
       type: kubernetes
       config:
@@ -351,7 +352,7 @@ Install Knative Serving:
 
 ```sh
 kustomize build common/knative/knative-serving/overlays/gateways | kubectl apply -f -
-kustomize build common/istio-1-24/cluster-local-gateway/base | kubectl apply -f -
+kustomize build common/istio-cni-1-24/cluster-local-gateway/base | kubectl apply -f -
 ```
 
 Optionally, you can install Knative Eventing, which can be used for inference request logging:
@@ -517,6 +518,8 @@ Install the Spark Operator:
 ```sh
 kustomize build apps/spark/spark-operator/overlays/kubeflow | kubectl apply -f -
 ```
+
+**Note:** The Ray component in the experimental folder is configured to disable Istio sidecar injection for its head and worker pods to ensure compatibility with Istio CNI.
 
 #### User Namespaces
 
@@ -708,4 +711,8 @@ pre-commit run
 - **Q:** What versions of Istio, Knative, Cert-Manager, Argo, ... are compatible with Kubeflow?
   **A:** Please refer to each individual component's documentation for a dependency compatibility range. For Istio, Knative, Dex, Cert-Manager, and OAuth2 Proxy, the versions in `common` are the ones we have validated.
 - **Q:** Can I use Kubeflow in an air-gapped environment?
-  **A:** Yes you can. You just need to to get the list of images from our [trivy CVE scanning script](https://github.com/kubeflow/manifests/blob/master/tests/gh-actions/trivy_scan.py), mirror them and replace the references in the manifests with kustomize components and overlays, see [Upgrading and Extending](#upgrading-and-extending). You could also use a simple kyverno policy to replace the images at runtime, which could be easier to maintain.
+  **A:** Yes you can. You just need to to get the list of images from our [trivy CVE scanning script](https://github.com/kubeflow/manifests/blob/master/tests/trivy_scan.py), mirror them and replace the references in the manifests with kustomize components and overlays, see [Upgrading and Extending](#upgrading-and-extending). You could also use a simple kyverno policy to replace the images at runtime, which could be easier to maintain.
+- **Q:** Why does Kubeflow use Istio CNI instead of standard Istio?
+  **A:** Istio CNI provides better security by eliminating the need for privileged init containers, making it more compatible with Pod Security Standards (PSS). It also enables native sidecars support introduced in Kubernetes 1.28, which helps address issues with init containers and application lifecycle management.
+- **Q:** Why does Istio CNI fail on Google Kubernetes Engine (GKE) with "read-only file system" errors?
+  **A:** GKE mounts `/opt/cni/bin` as read-only for security reasons, preventing the Istio CNI installer from writing the CNI binary. Use the GKE-specific overlay: `kubectl apply -k common/istio-cni-1-24/istio-install/overlays/gke`. This overlay uses GKE's writable CNI directory at `/home/kubernetes/bin`. For more details, see [Istio CNI Prerequisites](https://istio.io/latest/docs/setup/additional-setup/cni/#prerequisites) and [Platform Prerequisites](https://istio.io/latest/docs/ambient/install/platform-prerequisites/).-`
